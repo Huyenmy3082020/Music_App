@@ -12,9 +12,9 @@ export class Session {
   @Column()
   refreshToken: string;
 
-  @Column()
-  deviceinfo: string; 
-
+  @Column('json')
+  deviceInfo: object;
+  
   @Column()
   createdAt: Date;
 

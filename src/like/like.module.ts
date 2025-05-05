@@ -11,7 +11,8 @@ import { AuthModule } from 'src/auth/auth.module';  // Nhập khẩu AuthModule
   imports: [
     TypeOrmModule.forFeature([Like]),
     UserModule,
-  AuthModule
+  AuthModule,
+  SongsModule,
   ],
   controllers: [LikeController],
   providers: [LikeService],

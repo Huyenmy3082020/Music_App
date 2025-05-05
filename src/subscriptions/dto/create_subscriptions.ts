@@ -1,5 +1,5 @@
 export class   CreateSubscriptionDto {
-subscription_type: number;
+subscription_type:string ;
   start_date: Date;
   end_date: Date;
 }

@@ -9,25 +9,24 @@ import { SongService } from './songs.service';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import * as multer from 'multer';
 import cloudinary from '../../helper/cloudinary';
-
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 @Controller('song')
 export class SongController {
-  constructor(private readonly songService: SongService) {}
+  constructor(private readonly songService: SongService, private readonly amqpConnection: AmqpConnection,) {}
 
   @Post('create')
-  @UseInterceptors(FilesInterceptor('files', 2)) // Gửi form-data với field "files"
+  @UseInterceptors(FilesInterceptor('files', 2))
   async createSong(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() body: any,
   ): Promise<Song> {
     let fileUrl: string | null = null;
     let imageUrl: string | null = null;
-
+  
     for (const file of files) {
       const buffer = file.buffer;
       const mimetype = file.mimetype;
-
-      // Upload file lên Cloudinary dùng stream
+  
       const streamUpload = (buffer: Buffer, folder: string, resourceType: 'image' | 'video') => {
         return new Promise<any>((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(
@@ -43,7 +42,7 @@ export class SongController {
           stream.end(buffer);
         });
       };
-
+  
       if (mimetype.startsWith('audio/')) {
         const result = await streamUpload(buffer, 'audio', 'video');
         fileUrl = result.secure_url;
@@ -52,16 +51,27 @@ export class SongController {
         imageUrl = result.secure_url;
       }
     }
-
+  
     const createSongDto: CreateSongDto = {
       ...body,
       fileUrl,
       imageUrl,
     };
-
-    return await this.songService.createSong(createSongDto);
+  
+    const newSong = await this.songService.createSong(createSongDto);
+  
+    console.log('New song created:', newSong);
+    // Gửi message vào RabbitMQ
+    await this.amqpConnection.publish('songs_exchange', 'songs.create', {
+      action: 'create',
+      index: 'songs',
+      document: 
+       newSong,
+    });
+  
+    return newSong;
   }
-
+  
   @Get()
   async findAll(): Promise<Song[]> {
     return await this.songService.findAll();

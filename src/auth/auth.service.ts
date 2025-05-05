@@ -7,11 +7,13 @@ import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenDTO } from './dto/refreshtoken_dto';
+import { SessionService } from 'src/session/session.service';
 @Injectable()
 export class AuthService {
 
 
-    constructor(@InjectRepository(User) private userRepository: Repository<User>,private jwtService: JwtService) { }
+    constructor(@InjectRepository(User) private userRepository: Repository<User>,private jwtService: JwtService,
+    private sessionService: SessionService) { }
     
 
     async registerUser(RegisterUserDto: RegisterUserDto): Promise<User> {
@@ -20,19 +22,38 @@ export class AuthService {
         return user; 
       }
 
-   async loginUser(LoginUserDto:LoginUserDto):Promise<any> {
-      const user = await this.userRepository.findOne({ where: { email: LoginUserDto.email } });
-      if (!user) {
+      async loginUser(LoginUserDto: LoginUserDto): Promise<any> {
+        // Tìm người dùng theo email
+        const user = await this.userRepository.findOne({ where: { email: LoginUserDto.email } });
+        if (!user) {
             return { message: 'User not found' };
-      }
-        const isPasswordValid =bcrypt.compareSync(LoginUserDto.password, user.password);
+        }
+    
+        // Kiểm tra mật khẩu
+        const isPasswordValid = bcrypt.compareSync(LoginUserDto.password, user.password);
         if (!isPasswordValid) {
             return { message: 'Invalid password' };
         }
-       const data =  this.generateAccessToken({id:user.id, email:user.email});
-       return data;
-    }   
-
+    
+        const createdAt = new Date();
+        const expiresAt = new Date(createdAt.getTime() + 7 * 24 * 60 * 60 * 1000); // Hết hạn sau 7 ngày
+    
+        const data = await this.generateAccessToken({ id: user.id, email: user.email });
+    
+        const sessionData = {
+            userId: user.id,
+            refreshToken: data.refreshToken,  // Lấy refreshToken từ data
+            deviceInfo: LoginUserDto.deviceInfo,  // Nhận thông tin thiết bị từ LoginUserDto
+            createdAt: createdAt,
+            expiresAt: expiresAt,
+            isActive: true,
+        };
+    
+        await this.sessionService.createSession(sessionData);
+    
+        return { message: 'Login successful', ...data ,sessionData}; 
+    }
+    
     async refreshToken(RefreshToken: RefreshTokenDTO): Promise<any> {
         const verifyToken = await this.jwtService.verifyAsync(RefreshToken.refresh_token,{
             secret:process.env.REFRESHTOKEN_KEY_SECERT|| '123456', 

@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module, Search, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -19,6 +19,8 @@ import { HistoryController } from './history/history.controller';
 import { LikeService } from './like/like.service';
 import { LikeController } from './like/like.controller';
 import { LikeModule } from './like/like.module';
+import { ElasticsearchModule } from './rabbitmq/elasticsearch/elasticsearch.module';
+import { RabbitMQModule } from './rabbitmq/elasticsearch/rabbitmq.module';
 
 @Module({
   imports: [
@@ -32,7 +34,9 @@ import { LikeModule } from './like/like.module';
      LikeModule,
     SubscriptionsModule,
     HistoryModule,
-    LikeModule
+    LikeModule,
+    ElasticsearchModule,
+    RabbitMQModule
   ],
   controllers: [AppController, HistoryController, LikeController],
   providers: [AppService],

@@ -14,6 +14,24 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    container_name: my_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false   # Tắt security cho dễ dev
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m  # Giới hạn RAM cho ES
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
   app:
     build: .
     container_name: nest_app
@@ -21,12 +39,15 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
+      - elasticsearch
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
       DB_PASSWORD: 123456
       DB_NAME: nestdb
+      ELASTICSEARCH_NODE: http://elasticsearch:9200  # <-- thêm biến môi trường nếu cần connect
 
 volumes:
   pgdata:
+  esdata:
