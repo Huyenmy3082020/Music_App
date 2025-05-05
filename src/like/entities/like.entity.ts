@@ -5,17 +5,17 @@ import { Song } from 'src/songs/entities/songs.entity';
 @Entity()
 export class Like {
   @PrimaryColumn()
-  user_id: number;
+  userId: number;  // Cột userId sẽ là một phần của khóa chính
 
   @PrimaryColumn()
-  song_id: number;
+  songId: number;  // Cột songId sẽ là một phần của khóa chính
 
   @ManyToOne(() => User, user => user.likes)
-  user: User;
+  user: User;  // Mối quan hệ với User
 
   @ManyToOne(() => Song, song => song.id)
-  song: Song;
+  song: Song;  // Mối quan hệ với Song
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date;  // Thời gian người dùng "like" bài hát
 }

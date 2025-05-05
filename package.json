@@ -24,7 +24,7 @@
     "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "7.0.1",
+    "@elastic/elasticsearch": "^9.0.1",
     "@elastic/transport": "^8.9.6",
     "@golevelup/nestjs-rabbitmq": "^5.7.0",
     "@nestjs/common": "^11.0.1",
@@ -35,8 +35,9 @@
     "@nestjs/platform-express": "^11.1.0",
     "@nestjs/typeorm": "^11.0.0",
     "amqplib": "^0.10.7",
-    "bcrypt": "^5.1.1",
-    "class-validator": "^0.14.1",
+    "bcryptjs": "^3.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
     "cloudinary": "^1.41.3",
     "multer": "^1.4.5-lts.2",
     "multer-storage-cloudinary": "^4.0.0",

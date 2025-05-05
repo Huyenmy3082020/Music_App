@@ -4,7 +4,7 @@ import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenDTO } from './dto/refreshtoken_dto';
 import { SessionService } from 'src/session/session.service';
@@ -81,4 +81,8 @@ export class AuthService {
     logoutUser(userId: number): string {
         return 'Logout successful!';
     }
+    findUserByEmail(email: string): Promise<User | null> {
+        return this.userRepository.findOne({ where: { email } });
+    }
+    
 }

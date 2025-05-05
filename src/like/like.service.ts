@@ -21,7 +21,7 @@ export class LikeService {
 
     async getLike(userId: number): Promise<Like[]> {
         return await this.likeRepository.find({
-            where: { user_id: userId },
+            where: {userId : userId },
             relations: ['user'], // Assuming 'user' relation is set up correctly
         });
     }

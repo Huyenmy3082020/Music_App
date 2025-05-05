@@ -7,6 +7,8 @@ import { imageFileFilter } from 'helper/file-filter.util';
 import { UpdateUserDto } from './dto/updateDTO';
 import { AdminGuard, AuthGuard } from 'src/auth/auth.guard';
 import { Admin } from 'typeorm';
+import { Roles } from 'role/role.decorator';
+import { RolesGuard } from 'role/role.guard';
 
 @Controller('user')
 export class UserController {
@@ -27,7 +29,8 @@ export class UserController {
     return data
   
   }
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(['admin'])
   @Get('getUser/:id') 
   async getUser(@Param('id') id: number) {
     const data = await this.userService.findOne(id);

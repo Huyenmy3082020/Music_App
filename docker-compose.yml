@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
@@ -12,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
@@ -20,8 +18,8 @@ services:
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false   # Tắt security cho dễ dev
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m  # Giới hạn RAM cho ES
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -30,7 +28,17 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - ./esdata:/usr/share/elasticsearch/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: my_rabbitmq
+    ports:
+      - "5672:5672"     # cổng AMQP để app kết nối
+      - "15672:15672"   # cổng web quản lý
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
   app:
     build: .
@@ -40,14 +48,12 @@ services:
     depends_on:
       - postgres
       - elasticsearch
+      - rabbitmq
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
       DB_PASSWORD: 123456
       DB_NAME: nestdb
-      ELASTICSEARCH_NODE: http://elasticsearch:9200  # <-- thêm biến môi trường nếu cần connect
-
-volumes:
-  pgdata:
-  esdata:
+      ELASTICSEARCH_NODE: http://elasticsearch:9200
+      RABBITMQ_URI: amqp://guest:guest@rabbitmq:5672

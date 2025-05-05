@@ -1,7 +1,7 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, ConflictException, Controller, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { AuthService } from './auth.service';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { LoginUserDto } from './dto/login-user.dto';
 import {  RefreshTokenDTO } from './dto/refreshtoken_dto';
 import { AuthGuard } from './auth.guard';
@@ -11,10 +11,15 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post('register')
-    register(@Body() RegisterUserDto:RegisterUserDto ):void {
+    async register(@Body() RegisterUserDto:RegisterUserDto ):Promise<void> {
         const hasspassword = this.hasspassword(RegisterUserDto.password);
         RegisterUserDto.password = hasspassword;
-       this.authService.registerUser({...RegisterUserDto, password: hasspassword,refresh_token:"refresh_token", isActive:true});
+        const user = await this.authService.findUserByEmail(RegisterUserDto.email);
+        if (user) {
+            throw new ConflictException('User with this email already exists');
+        }
+    
+      await this.authService.registerUser({...RegisterUserDto, password: hasspassword,refresh_token:"refresh_token", isActive:true});
     }
 
     private  hasspassword = (password: string): string => {
