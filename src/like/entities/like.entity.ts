@@ -1,6 +1,7 @@
 import { Entity, PrimaryColumn, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Song } from 'src/songs/entities/songs.entity';
+import { ObjectType } from '@nestjs/graphql';
 
 @Entity()
 export class Like {

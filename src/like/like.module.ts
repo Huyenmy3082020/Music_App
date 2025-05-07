@@ -6,6 +6,7 @@ import { Like } from './entities/like.entity';
 import { UserModule } from 'src/user/user.module';
 import { SongsModule } from 'src/songs/songs.module';
 import { AuthModule } from 'src/auth/auth.module';  // Nhập khẩu AuthModule
+import { LikeResolver } from './like.resolver';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { AuthModule } from 'src/auth/auth.module';  // Nhập khẩu AuthModule
   SongsModule,
   ],
   controllers: [LikeController],
-  providers: [LikeService],
+  providers: [LikeService, LikeResolver],
   exports: [LikeService],
 })
 export class LikeModule {}

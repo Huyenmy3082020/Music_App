@@ -24,4 +24,7 @@ export class LikeService {
             relations: ['user'], // Assuming 'user' relation is set up correctly
         });
     }
+    async findAll() :Promise<Like[]>{
+        return await this.likeRepository.find()
+    }
 }

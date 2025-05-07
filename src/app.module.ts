@@ -30,7 +30,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     TypeOrmModule.forRoot(dataSourceOptions),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      autoSchemaFile: true, // hoặc: 'src/schema.gql'
+      path: '/graphql',     // <- giữ riêng endpoint GraphQL
     }),
+    
    UserModule,
      AuthModule,
     PlaylistsongModule,
