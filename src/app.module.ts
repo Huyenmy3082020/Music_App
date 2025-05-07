@@ -21,10 +21,16 @@ import { LikeController } from './like/like.controller';
 import { LikeModule } from './like/like.module';
 import { ElasticsearchModule } from './rabbitmq/elasticsearch/elasticsearch.module';
 import { RabbitMQModule } from './rabbitmq/elasticsearch/rabbitmq.module';
+import Graph from '@elastic/elasticsearch/lib/api/api/graph';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+    }),
    UserModule,
      AuthModule,
     PlaylistsongModule,

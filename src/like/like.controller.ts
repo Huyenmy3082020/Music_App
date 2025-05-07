@@ -2,6 +2,8 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { LikeCreateDto } from './dto/create_likedto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { LikeService } from './like.service';
+import { RolesGuard } from 'role/role.guard';
+import { Roles } from 'role/role.decorator';
 
 @Controller('like')
 export class LikeController {
@@ -9,12 +11,18 @@ export class LikeController {
         
     } 
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard,RolesGuard)
+    @Roles(['admin'])
     @Post('create')
     async createLike(@Body() likeCreateDto: LikeCreateDto, @Req() req: any) {
+    try {
         const userId = req.user_data.id;
         const data = await this.likeService.createLike(likeCreateDto, userId);
         return data;
+    } catch (error) {
+        console.error('Error creating like:', error);
+        throw error; // Rethrow the error to be handled by NestJS
+    }
     }
 
     @UseGuards(AuthGuard)

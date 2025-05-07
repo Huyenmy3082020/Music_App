@@ -17,6 +17,7 @@ export class RegisterUserDto {
   password: string;
 
   @IsString()
+  @IsNotEmpty()
   refresh_token: string;
 
   @IsBoolean()
