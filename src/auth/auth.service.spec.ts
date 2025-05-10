@@ -85,9 +85,7 @@ describe('AuthService', () => {
 
       const result = await service.loginUser({
         email: 'notfound@test.com', password: '123',
-        deviceInfo: {
-          name:"iphone"
-        }
+        
       });
       expect(result).toEqual({ message: 'User not found' });
     });
@@ -98,9 +96,7 @@ describe('AuthService', () => {
 
       const result = await service.loginUser({
         email: 'a@a.com', password: 'wrong',
-        deviceInfo: {
-          name:"iphone"
-        }
+      
       });
       expect(result).toEqual({ message: 'Invalid password' });
     });
@@ -110,9 +106,7 @@ describe('AuthService', () => {
       userRepository.findOne = jest.fn().mockResolvedValue(user);
       jwtService.signAsync = jest.fn().mockResolvedValueOnce('access-token').mockResolvedValueOnce('refresh-token');
 
-      const result = await service.loginUser({ email: user.email, password: '123456', deviceInfo: {
-        name:"iphone"
-      }});
+      const result = await service.loginUser({ email: user.email, password: '123456', });
 
       expect(result).toHaveProperty('accessToken', 'access-token');
       expect(result).toHaveProperty('refreshToken', 'refresh-token');

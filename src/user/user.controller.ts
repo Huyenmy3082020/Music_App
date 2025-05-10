@@ -22,8 +22,6 @@ export class UserController {
   ) { }
 
   // creata user
-  @UseGuards(AuthGuard)
-  @UseGuards(AdminGuard)
   @Get('getAll')
   async getAllUser(@Req() req: any) {
     const data = await this.userService.findAll()

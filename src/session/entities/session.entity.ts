@@ -17,10 +17,6 @@ export class Session {
   @Column()
   refreshToken: string;
 
-@Field(() => DeviceInfo)  // Thêm Field cho GraphQL
-@Column('json')
-deviceInfo: object;
-
   @Field() 
   @Column()
   createdAt: Date;
@@ -38,15 +34,3 @@ deviceInfo: object;
   user: User;
 }
 
-
-@ObjectType()  
-export class DeviceInfo {
-  @Field()  
-  os: string;
-
-  @Field() 
-  browser: string;
-
-  @Field() 
-  device: string;
-}

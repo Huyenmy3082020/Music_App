@@ -1,6 +1,7 @@
 import {
   Controller, Post, Get, Param, Body, Put, Delete,
-  UploadedFiles, UseInterceptors
+  UploadedFiles, UseInterceptors,
+  Query
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -61,7 +62,6 @@ export class SongController {
     const newSong = await this.songService.createSong(createSongDto);
   
     console.log('New song created:', newSong);
-    // Gửi message vào RabbitMQ
     await this.amqpConnection.publish('songs_exchange', 'songs.create', {
       action: 'create',
       index: 'songs',
@@ -77,10 +77,7 @@ export class SongController {
     return await this.songService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Song> {
-    return await this.songService.findOne(id);
-  }
+ 
 
   @Put(':id')
   async update(
@@ -94,4 +91,15 @@ export class SongController {
   async remove(@Param('id') id: number): Promise<void> {
     return await this.songService.remove(id);
   }
+  @Get('sort')
+  async getSongSort(@Query('sort') sort:string) :Promise<Song[]>
+  { 
+    return this.songService.getSongSort(sort)
+  }
+
+   @Get(':id')
+  async findOne(@Param('id') id: number): Promise<Song> {
+    return await this.songService.findOne(id);
+  }
+
 }

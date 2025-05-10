@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateSongDto } from './dto/create-song.dto';
 import { Genre } from 'src/genre/entities/genry.entity';
 import { Song } from './entities/songs.entity';
+import { SongSorter } from 'src/common/strategies/song-sort';
 
 @Injectable()
 export class SongService {
@@ -78,5 +79,10 @@ async createSong(createSongDto: CreateSongDto): Promise<Song> {
     }
     await this.songRepository.remove(song);
   }
- 
+
+    async getSongSort (sort){
+      const songs = await this.findAll();
+      const sorter = new SongSorter(sort);
+      return sorter.sortSongs(songs);
+    }
 }
