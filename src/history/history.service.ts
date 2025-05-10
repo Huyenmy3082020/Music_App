@@ -15,8 +15,10 @@ export class HistoryService {
             ...historydto,
             user_id: userId,
         });
-        return await this.historyRepository.save(history); // Simplified this part
+        return await this.historyRepository.save(history); 
     }
     
+
+
     
 }

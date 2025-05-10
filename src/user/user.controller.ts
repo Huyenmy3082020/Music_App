@@ -5,10 +5,11 @@ import { storageConfig } from 'helper/config';
 import { UserService } from './user.service';
 import { imageFileFilter } from 'helper/file-filter.util';
 import { UpdateUserDto } from './dto/updateDTO';
-import { AdminGuard, AuthGuard } from 'src/auth/auth.guard';
+import {  AuthGuard } from 'src/auth/auth.guard';
 import { Admin } from 'typeorm';
 import { Roles } from 'role/role.decorator';
 import { RolesGuard } from 'role/role.guard';
+import { AdminGuard } from 'src/auth/admin.guard';
 
 @Controller('user')
 export class UserController {

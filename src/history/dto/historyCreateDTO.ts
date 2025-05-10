@@ -1,6 +1,16 @@
+import { InputType, Field } from "@nestjs/graphql";
+
+@InputType()
 export class HistoryCreateDTO {
-    listened_at: Date;
-    userId: number;
-    songId: number;
-    created_at: Date;
+  @Field({ nullable: true })
+  listenedAt?: Date;
+
+  @Field()
+  user: number;
+
+  @Field()
+  songId: number;
+
+  @Field({ nullable: true })
+  createdAt?: Date;
 }

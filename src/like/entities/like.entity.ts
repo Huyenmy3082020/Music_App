@@ -1,22 +1,28 @@
 import { Entity, PrimaryColumn, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Song } from 'src/songs/entities/songs.entity';
-import { ObjectType } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 
+@ObjectType()  
 @Entity()
 export class Like {
+  @Field()  
   @PrimaryColumn()
-  userId: number;  // Cột userId sẽ là một phần của khóa chính
+  userId: number; 
 
+  @Field()  
   @PrimaryColumn()
-  songId: number;  // Cột songId sẽ là một phần của khóa chính
+  songId: number;  
 
+  @Field(() => User) 
   @ManyToOne(() => User, user => user.likes)
-  user: User;  // Mối quan hệ với User
+  user: User;  
 
+  @Field(() => Song)  
   @ManyToOne(() => Song, song => song.id)
-  song: Song;  // Mối quan hệ với Song
+  song: Song;  
 
+  @Field()  
   @CreateDateColumn()
-  created_at: Date;  // Thời gian người dùng "like" bài hát
+  created_at: Date; 
 }

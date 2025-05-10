@@ -31,7 +31,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true, // hoặc: 'src/schema.gql'
-      path: '/graphql',     // <- giữ riêng endpoint GraphQL
+      path: '/graphql', 
+        context: ({ req }) => ({ req }),    
     }),
     
    UserModule,

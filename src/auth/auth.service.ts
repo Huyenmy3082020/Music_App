@@ -8,6 +8,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenDTO } from './dto/refreshtoken_dto';
 import { SessionService } from 'src/session/session.service';
+// Removed unused import of 'hash' from 'crypto'
 @Injectable()
 export class AuthService {
 
@@ -17,19 +18,27 @@ export class AuthService {
     
 
     async registerUser(RegisterUserDto: RegisterUserDto): Promise<User> {
-        const user = this.userRepository.create(RegisterUserDto); 
-        await this.userRepository.save(user);
-        return user; 
+        
+        const user = await this.userRepository.findOne({ where: { email: RegisterUserDto.email } });
+
+        if(user){
+            throw ("da ton tai")
+        }
+    
+        const hashpassword = await bcrypt.hash(RegisterUserDto.password, 10);
+        const result =  this.userRepository.create({
+            ...RegisterUserDto,
+            password : hashpassword
+        });
+        return result; 
       }
 
       async loginUser(LoginUserDto: LoginUserDto): Promise<any> {
-        // Tìm người dùng theo email
         const user = await this.userRepository.findOne({ where: { email: LoginUserDto.email } });
         if (!user) {
             return { message: 'User not found' };
         }
     
-        // Kiểm tra mật khẩu
         const isPasswordValid = bcrypt.compareSync(LoginUserDto.password, user.password);
         if (!isPasswordValid) {
             return { message: 'Invalid password' };
