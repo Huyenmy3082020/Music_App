@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { SessionService } from 'src/session/session.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -27,7 +26,6 @@ describe('AuthService', () => {
   let service: AuthService;
   let userRepository: Repository<User>;
   let jwtService: JwtService;
-  let sessionService: SessionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,14 +33,12 @@ describe('AuthService', () => {
         AuthService,
         { provide: getRepositoryToken(User), useFactory: mockUserRepository },
         { provide: JwtService, useFactory: mockJwtService },
-        { provide: SessionService, useFactory: mockSessionService },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     jwtService = module.get<JwtService>(JwtService);
-    sessionService = module.get<SessionService>(SessionService);
   });
 
   it('should be defined', () => {

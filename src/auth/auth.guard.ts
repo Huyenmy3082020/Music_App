@@ -21,15 +21,14 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = this.getRequest(context);
-    const token = this.extractTokenFromHeader(request);
-
+    const token = this.extractTokenFromCookie(request); // Lấy token từ cookie
     if (!token) {
+      console.log('No token provided in cookies.');
       throw new UnauthorizedException('No token provided');
     }
-
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: process.env.ACCESSTOKEN_KEY_SECERT || '123456',
+        secret: process.env.ACCESSTOKEN_KEY_SECRET || '123456',
       });
 
       const user = await this.userRepository.findOne({
@@ -43,6 +42,7 @@ export class AuthGuard implements CanActivate {
       request['user_data'] = user;
       return true;
     } catch (err) {
+      console.log('Token verification error:', err.message || err);
       throw new UnauthorizedException('Invalid or expired token');
     }
   }
@@ -55,11 +55,8 @@ export class AuthGuard implements CanActivate {
     return context.switchToHttp().getRequest();
   }
 
-  private extractTokenFromHeader(request: Request): string | null {
-    const authHeader = request.get('Authorization');
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      return authHeader.split(' ')[1];
-    }
-    return null;
+  private extractTokenFromCookie(request: Request): string | null {
+    const token = request.cookies?.['access_token']; 
+    return token || null;
   }
 }

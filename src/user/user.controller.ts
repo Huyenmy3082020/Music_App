@@ -9,19 +9,17 @@ import {  AuthGuard } from 'src/auth/auth.guard';
 import { Admin } from 'typeorm';
 import { Roles } from 'role/role.decorator';
 import { RolesGuard } from 'role/role.guard';
-import { AdminGuard } from 'src/auth/admin.guard';
 
 @Controller('user')
 export class UserController {
 
-// Constructor injection of UserService is not needed for this example
 
 
   constructor(
     private readonly userService: UserService, 
   ) { }
 
-  // creata user
+  @UseGuards(AuthGuard)
   @Get('getAll')
   async getAllUser(@Req() req: any) {
     const data = await this.userService.findAll()
@@ -59,7 +57,6 @@ export class UserController {
     return data
   }
   @UseGuards(AuthGuard)
-  @UseGuards(AdminGuard)
   @Delete('delete-user')
   async deleteUser(@Req() req: any) {
     const id = req.user_data.id

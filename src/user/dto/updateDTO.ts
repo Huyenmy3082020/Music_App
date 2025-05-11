@@ -8,5 +8,4 @@ export class UpdateUserDto {
     playlists?: any[];
     histories?: any[];
     likes?: any[];
-    role?: string; 
 }

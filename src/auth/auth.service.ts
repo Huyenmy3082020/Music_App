@@ -8,7 +8,6 @@ import { User } from 'src/user/entities/user.entity';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RefreshTokenDTO } from './dto/refreshtoken_dto';
-import { SessionService } from 'src/session/session.service';
 
 @Injectable()
 export class AuthService {
@@ -16,10 +15,8 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-    private readonly sessionService: SessionService,
   ) {}
 
-  // Đăng ký người dùng mới
   async registerUser(dto: RegisterUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
       where: { email: dto.email },
@@ -28,7 +25,6 @@ export class AuthService {
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
-
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     const newUser = this.userRepository.create({
@@ -58,33 +54,22 @@ export class AuthService {
     const tokenPayload = { id: user.id, email: user.email };
     const tokens = await this.generateAccessToken(tokenPayload);
 
-    const now = new Date();
-    const sessionData = {
-      userId: user.id,
-      refreshToken: tokens.refreshToken,
-      createdAt: now,
-      expiresAt: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000), // 7 ngày
-      isActive: true,
-    };
 
-    await this.sessionService.createSession(sessionData);
-
-    await this.userRepository.update(user.id, {
+  await this.userRepository.update(user.id, {
       refresh_token: tokens.refreshToken,
     });
+
 
     return {
       message: 'Login successful',
       ...tokens,
-      session: sessionData,
     };
   }
 
-  // Làm mới access token từ refresh token
-  async refreshToken(dto: RefreshTokenDTO): Promise<any> {
+  async refreshToken(refreshToken :any): Promise<any> {
     let decoded: any;
     try {
-      decoded = await this.jwtService.verifyAsync(dto.refresh_token, {
+      decoded = await this.jwtService.verifyAsync(refreshToken, {
         secret: process.env.ACCESSTOKEN_KEY_SECERT || '123456',
       });
     } catch (error) {
@@ -92,8 +77,10 @@ export class AuthService {
     }
 
     const user = await this.userRepository.findOne({
-      where: { id: decoded.id, refresh_token: dto.refresh_token },
+      where: { id: decoded.id },
     });
+    console.log("user",user)
+    ;
 
     if (!user) {
       throw new NotFoundException('User not found or token mismatch');
@@ -111,11 +98,10 @@ export class AuthService {
     return newTokens;
   }
 
-  // Tạo access + refresh token
   private async generateAccessToken(payload: { id: number; email: string }) {
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.ACCESSTOKEN_KEY_SECERT || '123456',
-      expiresIn: '1h',
+      expiresIn: '10s',
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {
