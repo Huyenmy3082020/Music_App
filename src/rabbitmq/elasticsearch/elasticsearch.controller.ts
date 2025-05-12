@@ -20,10 +20,10 @@ export class ElasticsearchController{
   @Get('')
   async search(@Query('keyword') keyword: string) {
     try {
-      const result = await this.searchService.search(keyword); // Gọi service để tìm kiếm
-      return result; // Trả về kết quả tìm kiếm
+      const result = await this.searchService.search(keyword); 
+      return result; 
     } catch (error) {
-      return { error: 'Failed to search', details: error.message }; // Xử lý lỗi khi có vấn đề
+      return { error: 'Failed to search', details: error.message }; 
     }
   }  
   
