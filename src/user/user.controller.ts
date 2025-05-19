@@ -3,12 +3,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { storageConfig } from 'helper/config';
 import { UserService } from './user.service';
-import { imageFileFilter } from 'helper/file-filter.util';
 import { UpdateUserDto } from './dto/updateDTO';
 import {  AuthGuard } from 'src/auth/auth.guard';
 import { Admin } from 'typeorm';
-import { Roles } from 'role/role.decorator';
-import { RolesGuard } from 'role/role.guard';
+import { imageFileFilter } from 'helper/file-filter.util';
 
 @Controller('user')
 export class UserController {
@@ -26,8 +24,7 @@ export class UserController {
     return data
   
   }
-  @UseGuards(AuthGuard,RolesGuard)
-  @Roles(['admin'])
+  @UseGuards(AuthGuard)
   @Get('getUser/:id') 
   async getUser(@Param('id') id: number) {
     const data = await this.userService.findOne(id);

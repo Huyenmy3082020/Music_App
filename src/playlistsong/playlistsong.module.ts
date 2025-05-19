@@ -6,7 +6,6 @@ import { PlaylistSong } from './entities/playlistsong.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { PlaylistModule } from 'src/playlist/playlist.module';
 import { UserModule } from 'src/user/user.module';
-import { Song } from 'src/songs/entities/songs.entity';
 import { SongsModule } from 'src/songs/songs.module';
 
 @Module({

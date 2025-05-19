@@ -1,33 +1,21 @@
-// src/common/utils/file-filter.util.ts
+// src/helper/file-filter.util.ts
 
-import { extname } from 'path';
 import { Request } from 'express';
+import { extname } from 'path';
 
-// Extend the Request interface to include the fileValidationError property
-declare module 'express-serve-static-core' {
-  interface Request {
-    fileValidationError?: string;
+/**
+ * Lọc file tải lên: chỉ cho phép file ảnh (jpeg, png, gif, webp, ...)
+ */
+export const imageFileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  callback: (error: Error | null, acceptFile: boolean) => void,
+): void => {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+    return callback(
+      new Error('Chỉ cho phép tải lên các tệp hình ảnh (jpg, jpeg, png, gif, webp)'),
+      false,
+    );
   }
-}
-
-
-export function imageFileFilter(req: Request, file: Express.Multer.File, cb: Function) {
-  const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-  const ext = extname(file.originalname).toLowerCase();
-
-  if (!allowedExtensions.includes(ext)) {
-    req.fileValidationError = `Wrong extension type. Accepted file extensions are: ${allowedExtensions.join(', ')}`;
-    return cb(null, false);
-  }
-
-  const fileSize = parseInt(req.headers['content-length'] || '0', 10);
-
-  if (fileSize > 5 * 1024 * 1024) { // > 5MB
-    req.fileValidationError = 'File size is too large. Accepted file size is less than 5 MB';
-    console.log('File size exceeds the limit:', req.fileValidationError);
-    return cb(null, false);
-  }
-
-  console.log('File is valid');
-  cb(null, true);
-}
+  callback(null, true);
+};

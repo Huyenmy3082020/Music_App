@@ -39,7 +39,8 @@ export class AuthController {
     @Body() dto: LoginUserDto,
     @Res({ passthrough: true }) res: Response, 
   ) {
-    const { accessToken, refreshToken, message } = await this.authService.loginUser(dto);
+    const { accessToken, refreshToken, message } 
+    = await this.authService.loginUser(dto);
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,

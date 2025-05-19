@@ -21,9 +21,9 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = this.getRequest(context);
-    const token = this.extractTokenFromCookie(request); // Lấy token từ cookie
+
+    const token = this.extractTokenFromCookie(request); 
     if (!token) {
-      console.log('No token provided in cookies.');
       throw new UnauthorizedException('No token provided');
     }
     try {
