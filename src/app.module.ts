@@ -30,9 +30,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     TypeOrmModule.forRoot(dataSourceOptions),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true, // hoặc: 'src/schema.gql'
+      autoSchemaFile: true, 
       path: '/graphql', 
-        context: ({ req }) => ({ req }),    
+         context: ({ req, res }) => ({ req, res }),    
     }),
     
    UserModule,

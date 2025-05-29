@@ -39,7 +39,7 @@ export class AuthController {
     @Body() dto: LoginUserDto,
     @Res({ passthrough: true }) res: Response, 
   ) {
-    const { accessToken, refreshToken, message } 
+    const { accessToken, refreshToken, message,role ,id} 
     = await this.authService.loginUser(dto);
 
     res.cookie('refresh_token', refreshToken, {
@@ -58,15 +58,17 @@ export class AuthController {
     return {
       message,
       accessToken, 
-      refreshToken
+      refreshToken,
+      role,
+      id
     };
   }
 
   @Post('refresh_token')
 async refreshToken(@Request() req, @Res({ passthrough: true }) res: Response): Promise<any> {
+  console.log('Cookies:', req.cookies);
   const refreshToken = req.cookies['refresh_token'];
 
-  console.log("Received refresh_token:", refreshToken);
   if (!refreshToken) {
     throw new UnauthorizedException('Refresh token is missing');
   }

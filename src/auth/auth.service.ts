@@ -8,6 +8,7 @@ import { User } from 'src/user/entities/user.entity';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RefreshTokenDTO } from './dto/refreshtoken_dto';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const hashedPassword = await argon2.hash(dto.password);
 
     const newUser = this.userRepository.create({
       ...dto,
@@ -46,7 +47,8 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+    
+const isPasswordValid = await argon2.verify(user.password, dto.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid password');
     }
@@ -63,6 +65,8 @@ export class AuthService {
     return {
       message: 'Login successful',
       ...tokens,
+      role: user.role,
+      id: user.id,
     };
   }
 

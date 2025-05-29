@@ -11,8 +11,6 @@ import { imageFileFilter } from 'helper/file-filter.util';
 @Controller('user')
 export class UserController {
 
-
-
   constructor(
     private readonly userService: UserService, 
   ) { }
@@ -25,8 +23,9 @@ export class UserController {
   
   }
   @UseGuards(AuthGuard)
-  @Get('getUser/:id') 
-  async getUser(@Param('id') id: number) {
+  @Get('getUser') 
+  async getUser(@Req() req: any) {
+     const id = req.user_data.id;
     const data = await this.userService.findOne(id);
     return data;
   }
