@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LikeController } from './like.controller';
 import { LikeService } from './like.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { RolesGuard } from 'role/role.guard';
 import { Roles } from 'role/role.decorator';
 import { ExecutionContext } from '@nestjs/common';

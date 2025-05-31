@@ -105,7 +105,7 @@ const isPasswordValid = await argon2.verify(user.password, dto.password);
   private async generateAccessToken(payload: { id: number; email: string }) {
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.ACCESSTOKEN_KEY_SECERT || '123456',
-      expiresIn: '10s',
+      expiresIn: '10d',
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {

@@ -14,7 +14,7 @@ import { RabbitMQModule } from 'src/rabbitmq/elasticsearch/rabbitmq.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Song, Genre]),
-    forwardRef(() => UserModule),    // Đảm bảo rằng SongsModule đã được nhập vào đây nếu sử dụng Song entity
+ UserModule,
   ElasticsearchModule,
   RabbitMQModule
   ],

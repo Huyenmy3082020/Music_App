@@ -48,7 +48,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     ElasticsearchModule,
     RabbitMQModule
   ],
-  controllers: [AppController, HistoryController, LikeController],
+  controllers: [AppController ],
   providers: [AppService],
 })
 export class AppModule {}

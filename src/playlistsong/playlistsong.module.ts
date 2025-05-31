@@ -7,10 +7,11 @@ import { AuthModule } from 'src/auth/auth.module';
 import { PlaylistModule } from 'src/playlist/playlist.module';
 import { UserModule } from 'src/user/user.module';
 import { SongsModule } from 'src/songs/songs.module';
+import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PlaylistSong]),
+    TypeOrmModule.forFeature([PlaylistSong,Subscription]),
     AuthModule,
     UserModule,
     SongsModule,

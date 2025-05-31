@@ -14,6 +14,11 @@ export class History {
   @Column({ type: 'timestamp', nullable: true })
   listenedAt: Date;
 
+    @Field()
+    @Column({ type: 'int', default: 1 })
+    playCounts: number;
+
+
   @Field()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

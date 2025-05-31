@@ -6,12 +6,14 @@ import { Playlist } from './entities/playlist.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { PlaylistsongModule } from 'src/playlistsong/playlistsong.module';
+import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Playlist]),
-    forwardRef(() => UserModule),
-    forwardRef(() => AuthModule),   
+    TypeOrmModule.forFeature([Playlist,Subscription]),
+    UserModule,
+     AuthModule,
+     
   ],
   controllers: [PlaylistController],
   providers: [PlaylistService],

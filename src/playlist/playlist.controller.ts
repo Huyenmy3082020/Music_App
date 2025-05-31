@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { CreatePlaylistDto } from './entities/dto/playlistdto';
+import { SubAuthGuard } from 'src/auth/guard/sub_auth.guard';
 @Controller('playlist')
 export class PlaylistController {
 
@@ -9,7 +10,7 @@ export class PlaylistController {
         private   readonly playlistService: PlaylistService,
     ){}
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard,SubAuthGuard)
     @Post('create')
     async createPlaylist(@Body() createPlaylistDto: CreatePlaylistDto, @Req() req: any) {
         const userId = req.user_data.id;

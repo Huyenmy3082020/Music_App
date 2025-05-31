@@ -13,8 +13,6 @@ export class SongsConsumerService {
   })
   async handleNewSong(message: any) {
     console.log('Received new song from queue:', message);
-
-
     try {
       await this.elasticsearchService.indexDocument('songs', JSON.parse(JSON.stringify(message.document)));
       console.log('Song synchronized to Elasticsearch');

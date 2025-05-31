@@ -7,9 +7,7 @@ import { ElasticsearchController } from './elasticsearch.controller';
   imports: [
     NestElasticsearchModule.register({
       node: 'http://localhost:9200',
-    headers: {
-        'Accept': 'application/json',
-      },
+   
     }),
   ],
   controllers: [ElasticsearchController],

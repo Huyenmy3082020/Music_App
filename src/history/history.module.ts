@@ -8,7 +8,7 @@ import { HistoryResolver } from './history.resolver';
 
 @Module({
   imports: [TypeOrmModule.forFeature([History]),
-  UserModule,
+ 
   AuthModule
 ],
   providers: [HistoryService, HistoryResolver],

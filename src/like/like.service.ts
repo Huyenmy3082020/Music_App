@@ -15,7 +15,7 @@ export class LikeService {
             ...likeCreateDto,
             userId: userId,
         });
-        return await this.likeRepository.save(like); // Simplified this part
+        return await this.likeRepository.save(like); 
     }
 
     async getLike(userId: number): Promise<Like[]> {

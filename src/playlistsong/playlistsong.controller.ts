@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { PlaylistsongService } from './playlistsong.service';
 import { CreatePlaylistSongDto } from './dto/playlistsong-dto';
 import { PlaylistService } from 'src/playlist/playlist.service';

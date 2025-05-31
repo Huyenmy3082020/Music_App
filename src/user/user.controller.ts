@@ -4,7 +4,7 @@ import { extname } from 'path';
 import { storageConfig } from 'helper/config';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateDTO';
-import {  AuthGuard } from 'src/auth/auth.guard';
+import {  AuthGuard } from 'src/auth/guard/auth.guard';
 import { Admin } from 'typeorm';
 import { imageFileFilter } from 'helper/file-filter.util';
 
@@ -15,7 +15,6 @@ export class UserController {
     private readonly userService: UserService, 
   ) { }
 
-  @UseGuards(AuthGuard)
   @Get('getAll')
   async getAllUser(@Req() req: any) {
     const data = await this.userService.findAll()
