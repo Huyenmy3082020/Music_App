@@ -6,7 +6,6 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateDTO';
 import {  AuthGuard } from 'src/auth/guard/auth.guard';
 import { Admin } from 'typeorm';
-import { imageFileFilter } from 'helper/file-filter.util';
 
 @Controller('user')
 export class UserController {
@@ -32,7 +31,7 @@ export class UserController {
   @Post('upload-avatar')
   @UseInterceptors(FileInterceptor('avatar', {
     storage: storageConfig('avatar'),
-    fileFilter: imageFileFilter,
+    
   }))
   async uploadAvatar(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
     if (req.fileValidationError) {
