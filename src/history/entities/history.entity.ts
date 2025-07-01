@@ -1,10 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Song } from 'src/songs/entities/songs.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @Entity('history')
-@ObjectType() 
+@ObjectType()
 export class History {
   @Field()
   @PrimaryGeneratedColumn()
@@ -13,6 +20,10 @@ export class History {
   @Field({ nullable: true })
   @Column({ type: 'timestamp', nullable: true })
   listenedAt: Date;
+
+  @Field()
+  @Column({ type: 'int', default: 1 })
+  playCounts: number;
 
   @Field()
   @CreateDateColumn({ type: 'timestamp' })

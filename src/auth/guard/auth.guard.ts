@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = this.getRequest(context);
 
-    const token = this.extractTokenFromCookie(request); 
+    const token = this.extractTokenFromCookie(request);
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
@@ -56,7 +56,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromCookie(request: Request): string | null {
-    const token = request.cookies?.['access_token']; 
+    const token = request.cookies?.['access_token'];
     return token || null;
   }
 }

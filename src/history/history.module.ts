@@ -7,10 +7,7 @@ import { History } from './entities/history.entity';
 import { HistoryResolver } from './history.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([History]),
-  UserModule,
-  AuthModule
-],
+  imports: [TypeOrmModule.forFeature([History]), AuthModule],
   providers: [HistoryService, HistoryResolver],
   exports: [HistoryService],
 })

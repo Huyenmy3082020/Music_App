@@ -1,4 +1,9 @@
-import { Injectable, ConflictException, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -47,8 +52,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    
-const isPasswordValid = await argon2.verify(user.password, dto.password);
+    const isPasswordValid = await argon2.verify(user.password, dto.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid password');
     }
@@ -56,11 +60,9 @@ const isPasswordValid = await argon2.verify(user.password, dto.password);
     const tokenPayload = { id: user.id, email: user.email };
     const tokens = await this.generateAccessToken(tokenPayload);
 
-
-  await this.userRepository.update(user.id, {
+    await this.userRepository.update(user.id, {
       refresh_token: tokens.refreshToken,
     });
-
 
     return {
       message: 'Login successful',
@@ -70,7 +72,7 @@ const isPasswordValid = await argon2.verify(user.password, dto.password);
     };
   }
 
-  async refreshToken(refreshToken :any): Promise<any> {
+  async refreshToken(refreshToken: any): Promise<any> {
     let decoded: any;
     try {
       decoded = await this.jwtService.verifyAsync(refreshToken, {
@@ -83,8 +85,7 @@ const isPasswordValid = await argon2.verify(user.password, dto.password);
     const user = await this.userRepository.findOne({
       where: { id: decoded.id },
     });
-    console.log("user",user)
-    ;
+    console.log('user', user);
 
     if (!user) {
       throw new NotFoundException('User not found or token mismatch');
@@ -105,7 +106,7 @@ const isPasswordValid = await argon2.verify(user.password, dto.password);
   private async generateAccessToken(payload: { id: number; email: string }) {
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.ACCESSTOKEN_KEY_SECERT || '123456',
-      expiresIn: '10s',
+      expiresIn: '10d',
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {

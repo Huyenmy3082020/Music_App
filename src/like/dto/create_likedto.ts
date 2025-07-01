@@ -1,6 +1,13 @@
+import { Field, InputType } from '@nestjs/graphql';
+
+@InputType()
 export class LikeCreateDto {
-    songId: number;
-    created_at: Date;
-    updated_at: Date;
-    isActive: boolean;
+  @Field()
+  songId: number;
+  @Field()
+  created_at: Date;
+  @Field()
+  updated_at: Date;
+  @Field()
+  isActive: boolean;
 }

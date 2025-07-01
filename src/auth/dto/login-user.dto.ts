@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 @InputType()
 export class LoginUserDto {
   @Field()
-    @IsEmail({}, { message: 'Email không hợp lệ' })
+  @IsEmail({}, { message: 'Email không hợp lệ' })
   email: string;
 
   @Field()

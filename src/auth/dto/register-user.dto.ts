@@ -15,8 +15,7 @@ export class RegisterUserDto {
   @Column({
     type: 'enum',
     enum: RoleEnum,
-    default: RoleEnum.USER, 
+    default: RoleEnum.USER,
   })
   role: RoleEnum;
-
 }

@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions } from 'db/data-source';
 // import { UserModule } from './user/user.module';
- import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { SongsModule } from './songs/songs.module';
 import { GenreController } from './genre/genre.controller';
@@ -30,25 +30,25 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     TypeOrmModule.forRoot(dataSourceOptions),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true, 
-      path: '/graphql', 
-         context: ({ req, res }) => ({ req, res }),    
+      autoSchemaFile: true,
+      path: '/graphql',
+      context: ({ req, res }) => ({ req, res }),
     }),
-    
-   UserModule,
-     AuthModule,
+
+    UserModule,
+    AuthModule,
     PlaylistsongModule,
     SongsModule,
     GenreModule,
     PlaylistModule,
-     LikeModule,
+    LikeModule,
     SubscriptionsModule,
     HistoryModule,
     LikeModule,
     ElasticsearchModule,
-    RabbitMQModule
+    RabbitMQModule,
   ],
-  controllers: [AppController, HistoryController, LikeController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

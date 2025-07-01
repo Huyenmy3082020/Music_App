@@ -20,7 +20,7 @@ export class CreateSongDto {
   duration: number;
 
   @IsUrl()
-  fileUrl: string; 
+  fileUrl: string;
 
-  imageUrl?: string; 
+  imageUrl?: string;
 }

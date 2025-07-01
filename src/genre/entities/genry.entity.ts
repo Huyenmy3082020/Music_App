@@ -1,22 +1,28 @@
-import { ObjectType, Field } from '@nestjs/graphql';  // Thêm import cho GraphQL
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { ObjectType, Field } from '@nestjs/graphql'; // Thêm import cho GraphQL
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@ObjectType()  
+@ObjectType()
 @Entity()
 export class Genre {
-  @Field() 
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()  
+  @Field()
   @Column({ unique: true })
-  name: string; 
+  name: string;
 
-  @Field()  
+  @Field()
   @CreateDateColumn()
   createAt: Date;
 
-  @Field() 
+  @Field()
   @UpdateDateColumn()
   updateAt: Date;
 }

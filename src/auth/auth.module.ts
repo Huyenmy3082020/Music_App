@@ -8,10 +8,7 @@ import { User } from 'src/user/entities/user.entity';
 import { AuthResolver } from './auth.resolver';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User]),
-    JwtModule
-  ],
+  imports: [TypeOrmModule.forFeature([User]), JwtModule],
   controllers: [AuthController],
   providers: [AuthService, AuthResolver],
   exports: [JwtModule, AuthService],
