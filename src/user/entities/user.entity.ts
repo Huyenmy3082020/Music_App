@@ -1,5 +1,12 @@
 // user.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Playlist } from 'src/playlist/entities/playlist.entity';
 import { Like } from 'src/like/entities/like.entity';
@@ -61,9 +68,7 @@ export class User {
   @OneToMany(() => Subscription, (subscription) => subscription.user)
   subscriptions: Subscription[];
 
-    @Field(() => String)
-  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.USER }) 
+  @Field(() => String)
+  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.USER })
   role: RoleEnum;
-
-
 }

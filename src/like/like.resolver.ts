@@ -6,18 +6,16 @@ import { LikeCreateDto } from './dto/create_likedto';
 
 @Resolver(() => Like)
 export class LikeResolver {
-    constructor (
-        private readonly likeServie :LikeService
-    ){
-
-    }
-    @Query(() => [LikeRes])
-    async getAllLikes(): Promise<Like[]> {
-      return this.likeServie.findAll();
-    }
-    @Mutation(() => LikeRes)
-    async createLike( @Args('likedto') likedto: LikeCreateDto,
-      @Context() context: any ){
-      return this.likeServie.createLike(likedto, context.req.user_data.id);
-    }
+  constructor(private readonly likeServie: LikeService) {}
+  @Query(() => [LikeRes])
+  async getAllLikes(): Promise<Like[]> {
+    return this.likeServie.findAll();
+  }
+  @Mutation(() => LikeRes)
+  async createLike(
+    @Args('likedto') likedto: LikeCreateDto,
+    @Context() context: any,
+  ) {
+    return this.likeServie.createLike(likedto, context.req.user_data.id);
+  }
 }

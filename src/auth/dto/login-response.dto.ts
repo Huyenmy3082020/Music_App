@@ -12,8 +12,6 @@ export class LoginResponseDto {
   @Field()
   refreshToken: string;
 
-  
   @Field()
   role: string;
-
 }

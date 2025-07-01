@@ -6,25 +6,27 @@ import { RegisterSubscriptionDto } from './dto/RegisterSubscriptionDto';
 
 @Controller('subscriptions')
 export class SubscriptionsController {
+  constructor(private readonly subscriptionsService: SubscriptionsService) {}
+  @UseGuards(AuthGuard)
+  @Post('create')
+  async createSubscription(
+    @Body() createSubscriptionDto: CreateSubscriptionDto,
+  ): Promise<any> {
+    return await this.subscriptionsService.createSubscription(
+      createSubscriptionDto,
+    );
+  }
 
-    constructor(
-        private   readonly subscriptionsService: SubscriptionsService,
-    ){}
-    @UseGuards(AuthGuard)
-    @Post('create')
-    async createSubscription(@Body() createSubscriptionDto: CreateSubscriptionDto): Promise<any> {
-        
-       return await this.subscriptionsService.createSubscription(createSubscriptionDto,);
-    }
-
-            @UseGuards(AuthGuard)
-            @Post('RegisterSubscription')
-            async RegisterSubscription(
-            @Body() body: RegisterSubscriptionDto,
-            @Req() req: any
-            ) {
-            const userId = req.user_data.id;
-            return await this.subscriptionsService.RegisterSubscription(body.idSub, userId);
-            }
-
+  @UseGuards(AuthGuard)
+  @Post('RegisterSubscription')
+  async RegisterSubscription(
+    @Body() body: RegisterSubscriptionDto,
+    @Req() req: any,
+  ) {
+    const userId = req.user_data.id;
+    return await this.subscriptionsService.RegisterSubscription(
+      body.idSub,
+      userId,
+    );
+  }
 }

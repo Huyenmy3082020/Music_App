@@ -16,27 +16,27 @@ export class SongService {
     private genreRepository: Repository<Genre>,
   ) {}
 
-  
-async createSong(createSongDto: CreateSongDto): Promise<Song> {
+  async createSong(createSongDto: CreateSongDto): Promise<Song> {
     if (!createSongDto.genre_id) {
       throw new Error('Genre ID is required.');
     }
-  
-    let genre: Genre | null = await this.genreRepository.findOne({ where: { id: createSongDto.genre_id } });
-  
+
+    let genre: Genre | null = await this.genreRepository.findOne({
+      where: { id: createSongDto.genre_id },
+    });
+
     if (!genre) {
       throw new Error(`Genre with ID ${createSongDto.genre_id} not found.`);
     }
-  
+
     const song = this.songRepository.create({
       ...createSongDto,
       genre, // Gắn genre vào song
     });
-  
+
     // Lưu bài hát vào cơ sở dữ liệu
     return await this.songRepository.save(song);
   }
-  
 
   // Read: Lấy tất cả song
   async findAll(): Promise<Song[]> {
@@ -65,7 +65,11 @@ async createSong(createSongDto: CreateSongDto): Promise<Song> {
       throw new Error('Song not found');
     }
 
-    const genre = createSongDto.genre_id ? await this.genreRepository.findOne({ where: { id: createSongDto.genre_id } }) : null;
+    const genre = createSongDto.genre_id
+      ? await this.genreRepository.findOne({
+          where: { id: createSongDto.genre_id },
+        })
+      : null;
 
     Object.assign(song, createSongDto, { genre });
     return await this.songRepository.save(song);
@@ -80,9 +84,9 @@ async createSong(createSongDto: CreateSongDto): Promise<Song> {
     await this.songRepository.remove(song);
   }
 
-    async getSongSort (sort){
-      const songs = await this.findAll();
-      const sorter = new SongSorter(sort);
-      return sorter.sortSongs(songs);
-    }
+  async getSongSort(sort) {
+    const songs = await this.findAll();
+    const sorter = new SongSorter(sort);
+    return sorter.sortSongs(songs);
+  }
 }

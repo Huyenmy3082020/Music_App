@@ -4,23 +4,23 @@ import dataSource from 'db/data-source';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-app.enableCors({
-  origin: 'http://localhost:7000', // hoặc domain FE của bạn
-  credentials: true,
-});
+  const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'http://localhost:7000', // hoặc domain FE của bạn
+    credentials: true,
+  });
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   await app.listen(process.env.PORT ?? 3000);
 }
 
-
-dataSource.initialize()
+dataSource
+  .initialize()
   .then(() => {
-    console.log("✅ Database connected successfully!");
+    console.log('✅ Database connected successfully!');
   })
   .catch((err) => {
-    console.error("❌ Failed to connect to the database:", err);
+    console.error('❌ Failed to connect to the database:', err);
   });
 
 bootstrap();

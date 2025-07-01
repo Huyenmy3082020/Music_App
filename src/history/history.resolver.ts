@@ -8,25 +8,20 @@ import { User } from 'src/user/entities/user.entity';
 
 @Resolver()
 export class HistoryResolver {
-
-      constructor(private historyservice: HistoryService) { 
-
-    }
-//     @UseGuards(AuthGuard)
-// @Mutation(() => History)
-// async createHistory(
-//   @Args('historydto') historyData: HistoryCreateDTO,
-//   @Context() context: any, 
-// ) {
-//   const userId = context.req.user_data?.id;
-//   return await this.historyservice.creatHistory(historyData, userId);
-// }
-      @UseGuards(AuthGuard)
-      @Mutation(() => [History])
+  constructor(private historyservice: HistoryService) {}
+  //     @UseGuards(AuthGuard)
+  // @Mutation(() => History)
+  // async createHistory(
+  //   @Args('historydto') historyData: HistoryCreateDTO,
+  //   @Context() context: any,
+  // ) {
+  //   const userId = context.req.user_data?.id;
+  //   return await this.historyservice.creatHistory(historyData, userId);
+  // }
+  @UseGuards(AuthGuard)
+  @Mutation(() => [History])
   async getHistoryUser(@Context() context: any) {
     const userId = context.req.user_data?.id;
     return await this.historyservice.getHistoryUser(userId);
-
-}
-
+  }
 }

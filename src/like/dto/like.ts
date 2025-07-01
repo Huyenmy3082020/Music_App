@@ -1,9 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType() // Đảm bảo rằng bạn đã thêm trang trí này cho class Like
-export class LikeRes{
-  
-
+export class LikeRes {
   @Field(() => Int)
   userId: number;
 

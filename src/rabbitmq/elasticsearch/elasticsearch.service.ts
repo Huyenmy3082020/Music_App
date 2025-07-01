@@ -3,20 +3,21 @@ import { ElasticsearchService as NestElasticsearchService } from '@nestjs/elasti
 
 @Injectable()
 export class ElasticsearchService {
-  constructor(private readonly elasticsearchService: NestElasticsearchService) {}
+  constructor(
+    private readonly elasticsearchService: NestElasticsearchService,
+  ) {}
 
- async indexDocument(index: string, document: any) {
-  try {
-    const response = await this.elasticsearchService.index({
-      index: index,
-      body: document,
-      
-    });
-    console.log("Song data indexed successfully", response);
-  } catch (error) {
-    console.error('Error indexing song data to Elasticsearch:', error);
+  async indexDocument(index: string, document: any) {
+    try {
+      const response = await this.elasticsearchService.index({
+        index: index,
+        body: document,
+      });
+      console.log('Song data indexed successfully', response);
+    } catch (error) {
+      console.error('Error indexing song data to Elasticsearch:', error);
+    }
   }
-}
 
   async search(keyword: string) {
     try {
@@ -48,6 +49,4 @@ export class ElasticsearchService {
       throw error;
     }
   }
-  
-  
 }

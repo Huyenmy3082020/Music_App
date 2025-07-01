@@ -40,7 +40,13 @@ describe('LikeController', () => {
   describe('createLike', () => {
     it('should call createLike from LikeService and return data', async () => {
       // Mock data
-      const likeCreateDto = { postId: 1, songId: 1, created_at: new Date(), updated_at: new Date(), isActive: true };
+      const likeCreateDto = {
+        postId: 1,
+        songId: 1,
+        created_at: new Date(),
+        updated_at: new Date(),
+        isActive: true,
+      };
       const userId = 1;
       const responseData = { id: 1, postId: 1, userId };
 
@@ -54,23 +60,36 @@ describe('LikeController', () => {
       const result = await controller.createLike(likeCreateDto, req);
 
       // Assertions
-      expect(likeService.createLike).toHaveBeenCalledWith(likeCreateDto, userId);
+      expect(likeService.createLike).toHaveBeenCalledWith(
+        likeCreateDto,
+        userId,
+      );
       expect(result).toEqual(responseData);
     });
 
     it('should handle errors correctly', async () => {
       // Mock data
-      const likeCreateDto = { postId: 1, songId: 1, created_at: new Date(), updated_at: new Date(), isActive: true };
+      const likeCreateDto = {
+        postId: 1,
+        songId: 1,
+        created_at: new Date(),
+        updated_at: new Date(),
+        isActive: true,
+      };
       const userId = 1;
 
       // Setup mock service to throw an error
-      likeService.createLike = jest.fn().mockRejectedValue(new Error('Error creating like'));
+      likeService.createLike = jest
+        .fn()
+        .mockRejectedValue(new Error('Error creating like'));
 
       // Mock request object
       const req = { user_data: { id: userId } };
 
       // Check if the error is handled correctly
-      await expect(controller.createLike(likeCreateDto, req)).rejects.toThrowError('Error creating like');
+      await expect(
+        controller.createLike(likeCreateDto, req),
+      ).rejects.toThrowError('Error creating like');
     });
   });
 

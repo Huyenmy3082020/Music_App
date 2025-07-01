@@ -1,5 +1,13 @@
 // src/genre/genre.controller.ts
-import { Body, Controller, Post, Get, Param, Put, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { CreateGenreDto } from './dto/create_genra_dto';
 import { Genre } from './entities/genry.entity';
 import { GenreService } from './genre.service';

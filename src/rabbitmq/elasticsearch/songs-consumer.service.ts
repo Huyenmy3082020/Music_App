@@ -14,7 +14,10 @@ export class SongsConsumerService {
   async handleNewSong(message: any) {
     console.log('Received new song from queue:', message);
     try {
-      await this.elasticsearchService.indexDocument('songs', JSON.parse(JSON.stringify(message.document)));
+      await this.elasticsearchService.indexDocument(
+        'songs',
+        JSON.parse(JSON.stringify(message.document)),
+      );
       console.log('Song synchronized to Elasticsearch');
     } catch (error) {
       console.error('Error syncing song to Elasticsearch:', error);

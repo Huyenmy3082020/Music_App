@@ -10,10 +10,9 @@ import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Playlist,Subscription]),
+    TypeOrmModule.forFeature([Playlist, Subscription]),
     UserModule,
-     AuthModule,
-     
+    AuthModule,
   ],
   controllers: [PlaylistController],
   providers: [PlaylistService],

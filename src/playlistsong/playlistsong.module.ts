@@ -11,11 +11,11 @@ import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PlaylistSong,Subscription]),
+    TypeOrmModule.forFeature([PlaylistSong, Subscription]),
     AuthModule,
     UserModule,
     SongsModule,
-    PlaylistModule
+    PlaylistModule,
   ],
   controllers: [PlaylistsongController],
   providers: [PlaylistsongService],

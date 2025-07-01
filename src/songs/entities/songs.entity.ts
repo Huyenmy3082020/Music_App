@@ -1,41 +1,50 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Genre } from 'src/genre/entities/genry.entity';
-import { History } from 'src/history/entities/history.entity'; 
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { History } from 'src/history/entities/history.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 
-@ObjectType()  
+@ObjectType()
 @Entity()
 export class Song {
-  @Field()  
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field() 
+  @Field()
   @Column()
   title: string;
 
-  @Field() 
+  @Field()
   @Column()
   artist: string;
 
-  @Field({ nullable: true })  
+  @Field({ nullable: true })
   @Column({ nullable: true })
   album: string;
 
-  @Field({ nullable: true }) 
+  @Field({ nullable: true })
   @Column({ nullable: true })
   imageUrl: string;
 
-  @Field(() => Genre, { nullable: true }) 
+  @Field(() => Genre, { nullable: true })
   @ManyToOne(() => Genre, { nullable: true })
   @JoinColumn({ name: 'genre_id' })
   genre: Genre;
 
-  @Field()  
+  @Field()
   @Column('int')
   duration: number;
 
-  @Field()  
+  @Field()
   @Column()
   fileUrl: string;
 
@@ -43,11 +52,11 @@ export class Song {
   @CreateDateColumn()
   createAt: Date;
 
-  @Field()  
+  @Field()
   @UpdateDateColumn()
   updateAt: Date;
 
-  @Field(() => [History])  
+  @Field(() => [History])
   @OneToMany(() => History, (history) => history.song)
   histories: History[];
 }

@@ -14,12 +14,12 @@ import { RabbitMQModule } from 'src/rabbitmq/elasticsearch/rabbitmq.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Song, Genre]),
- UserModule,
-  ElasticsearchModule,
-  RabbitMQModule
+    UserModule,
+    ElasticsearchModule,
+    RabbitMQModule,
   ],
   controllers: [SongController],
-  providers: [SongService,SongsConsumerService],
+  providers: [SongService, SongsConsumerService],
   exports: [SongService, TypeOrmModule],
 })
 export class SongsModule {}

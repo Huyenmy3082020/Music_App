@@ -1,23 +1,29 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { ObjectType, Field } from '@nestjs/graphql';
 
-@ObjectType() 
+@ObjectType()
 @Entity()
 export class Subscription {
-  @Field() 
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => User)  
-  @ManyToOne(() => User, user => user.subscriptions)
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.subscriptions)
   user: User;
 
-  @Field()  
+  @Field()
   @Column()
   subscription_type: string;
 
-  @Field()  
+  @Field()
   @Column({ type: 'timestamp' })
   start_date: Date;
 
@@ -25,7 +31,7 @@ export class Subscription {
   @Column({ type: 'timestamp', nullable: true })
   end_date: Date;
 
-  @Field()  
+  @Field()
   @CreateDateColumn()
   created_at: Date;
 }

@@ -34,54 +34,57 @@ export class AuthController {
     return { message: 'User registered successfully' };
   }
 
- @Post('login')
+  @Post('login')
   async loginUser(
     @Body() dto: LoginUserDto,
-    @Res({ passthrough: true }) res: Response, 
+    @Res({ passthrough: true }) res: Response,
   ) {
-    const { accessToken, refreshToken, message,role ,id} 
-    = await this.authService.loginUser(dto);
+    const { accessToken, refreshToken, message, role, id } =
+      await this.authService.loginUser(dto);
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return {
       message,
-      accessToken, 
+      accessToken,
       refreshToken,
       role,
-      id
+      id,
     };
   }
 
   @Post('refresh_token')
-async refreshToken(@Request() req, @Res({ passthrough: true }) res: Response): Promise<any> {
-  console.log('Cookies:', req.cookies);
-  const refreshToken = req.cookies['refresh_token'];
+  async refreshToken(
+    @Request() req,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<any> {
+    console.log('Cookies:', req.cookies);
+    const refreshToken = req.cookies['refresh_token'];
 
-  if (!refreshToken) {
-    throw new UnauthorizedException('Refresh token is missing');
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token is missing');
+    }
+
+    const result = await this.authService.refreshToken(refreshToken);
+
+    res.cookie('access_token', result.accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 15,
+    });
+
+    return { message: 'Token refreshed successfully' };
   }
-
-  const result = await this.authService.refreshToken(refreshToken);
-
-  res.cookie('access_token', result.accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: 'lax',
-    maxAge: 1000 * 60 * 15, 
-  });
-
-  return { message: 'Token refreshed successfully' };
-}
 }

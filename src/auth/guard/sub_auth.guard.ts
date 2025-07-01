@@ -1,7 +1,12 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from "typeorm";
-import { Subscription } from "src/subscriptions/entities/subscription.entity";
+import { Repository } from 'typeorm';
+import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 
 @Injectable()
 export class SubAuthGuard implements CanActivate {

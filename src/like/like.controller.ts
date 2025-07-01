@@ -4,28 +4,26 @@ import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { LikeService } from './like.service';
 @Controller('like')
 export class LikeController {
-        constructor(   private readonly likeService: LikeService,) { 
-        
-    } 
+  constructor(private readonly likeService: LikeService) {}
 
-    @UseGuards(AuthGuard)
-    @Post('create')
-    async createLike(@Body() likeCreateDto: LikeCreateDto, @Req() req: any) {
+  @UseGuards(AuthGuard)
+  @Post('create')
+  async createLike(@Body() likeCreateDto: LikeCreateDto, @Req() req: any) {
     try {
-        const userId = req.user_data.id;
-        const data = await this.likeService.createLike(likeCreateDto, userId);
-        return data;
+      const userId = req.user_data.id;
+      const data = await this.likeService.createLike(likeCreateDto, userId);
+      return data;
     } catch (error) {
-        console.error('Error creating like:', error);
-        throw error; // Rethrow the error to be handled by NestJS
+      console.error('Error creating like:', error);
+      throw error; // Rethrow the error to be handled by NestJS
     }
-    }
+  }
 
-    @UseGuards(AuthGuard)
-    @Get('getLike')
-    async getLike( @Req() req: any) {
-        const userId = req.user_data.id;
-        const data = await this.likeService.getLike(userId);
-        return data;
-    }
+  @UseGuards(AuthGuard)
+  @Get('getLike')
+  async getLike(@Req() req: any) {
+    const userId = req.user_data.id;
+    const data = await this.likeService.getLike(userId);
+    return data;
+  }
 }
