@@ -58,7 +58,6 @@ export class SongController {
 
     const newSong = await this.songService.createSong(createSongDto);
 
-    console.log('New song created:', newSong);
     this.amqpConnection.publish('songs_exchange', 'songs.create', {
       action: 'create',
       index: 'songs',
